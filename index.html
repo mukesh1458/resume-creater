@@ -135,9 +135,9 @@
         <input type="url" id="linkedin" aria-required="true" placeholder="Enter your LinkedIn URL" required>
         <span id="linkedinError" class="error" aria-live="polite">Please enter a valid LinkedIn URL.</span>
         
-        <label for="github">🤖 GitHub Profile</label>
+        <label for="github">🤖 Roles and responsibilities</label>
         <input type="url" id="github" aria-required="true" placeholder="Enter your GitHub URL" required>
-        <span id="githubError" class="error" aria-live="polite">Please enter a valid GitHub URL.</span>
+        <span id="githubError" class="error" aria-live="polite">Please enter a valid Role and responsibility.</span>
         
         <!-- Summary -->
         <label for="summary">📝 Summary (Brief about yourself)</label>
@@ -198,7 +198,7 @@
       const email = document.getElementById("email").value;
       const phone = document.getElementById("phone").value;
       const linkedin = document.getElementById("linkedin").value;
-      const github = document.getElementById("github").value;
+      const Rolesandresponsibilities = document.getElementById("Roles and responsibilities").value;
       const summary = document.getElementById("summary").value;
       const education = document.getElementById("education").value;
       const experience = document.getElementById("experience").value;
@@ -210,7 +210,7 @@
         <strong>Email:</strong> ${email} <br>
         <strong>Phone:</strong> ${phone} <br>
         <strong>LinkedIn:</strong> ${linkedin} <br>
-        <strong>GitHub:</strong> ${github} <br>
+        <strong>Roles and responsibilities:</strong> ${Rolesandresponsibilities} <br>
         <strong>Summary:</strong> ${summary} <br>
         <strong>Education:</strong> ${education} <br>
         <strong>Experience:</strong> ${experience} <br>
@@ -241,7 +241,7 @@
       checkField("email", "emailError");
       checkField("phone", "phoneError");
       checkField("linkedin", "linkedinError");
-      checkField("github", "githubError");
+      checkField("Roles and responsibilities", "Roles and responsibilities error");
       checkField("summary", "summaryError");
       checkField("education", "educationError");
       checkField("experience", "experienceError");
