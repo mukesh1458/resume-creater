@@ -10,7 +10,7 @@
     /* Base Styles */
     body {
       font-family: 'Raleway', sans-serif;
-     background: linear-gradient(135deg, #4169E1, #000428);
+      background: linear-gradient(135deg, #4169E1, #000428);
       color: white;
       margin: 0;
       padding: 0;
@@ -135,9 +135,10 @@
         <input type="url" id="linkedin" aria-required="true" placeholder="Enter your LinkedIn URL" required>
         <span id="linkedinError" class="error" aria-live="polite">Please enter a valid LinkedIn URL.</span>
         
+        <!-- Roles and responsibilities -->
         <label for="Roles and responsibilities">🤖 Roles and responsibilities</label>
-        <input type="url" id="github" aria-required="true" placeholder="Enter your Roles and responsibilities" required>
-        <span id="githubError" class="error" aria-live="polite">Please enter a valid Role and responsibility.</span>
+        <input type="url" id="Roles and responsibilities" aria-required="true" placeholder="Enter your Roles and responsibilities" required>
+        <span id="rolesError" class="error" aria-live="polite">Please enter a valid Role and responsibility.</span>
         
         <!-- Summary -->
         <label for="summary">📝 Summary (Brief about yourself)</label>
@@ -164,7 +165,8 @@
         <textarea id="projects" aria-required="true" placeholder="Enter details about your projects" required></textarea>
         <span id="projectsError" class="error" aria-live="polite">Please list your projects.</span>
         
-        <button type="button" onclick="GeneratePDF()">📀 Download Resume</button>
+        <!-- Validate then generate PDF -->
+        <button type="button" onclick="validateAndGeneratePDF()">📀 Download Resume</button>
       </form>
       
       <!-- Live Preview Section -->
@@ -198,7 +200,7 @@
       const email = document.getElementById("email").value;
       const phone = document.getElementById("phone").value;
       const linkedin = document.getElementById("linkedin").value;
-      const Rolesandresponsibilities = document.getElementById("Roles and responsibilities").value;
+      const roles = document.getElementById("Roles and responsibilities").value;
       const summary = document.getElementById("summary").value;
       const education = document.getElementById("education").value;
       const experience = document.getElementById("experience").value;
@@ -210,7 +212,7 @@
         <strong>Email:</strong> ${email} <br>
         <strong>Phone:</strong> ${phone} <br>
         <strong>LinkedIn:</strong> ${linkedin} <br>
-        <strong>Roles and responsibilities:</strong> ${Rolesandresponsibilities} <br>
+        <strong>Roles and responsibilities:</strong> ${roles} <br>
         <strong>Summary:</strong> ${summary} <br>
         <strong>Education:</strong> ${education} <br>
         <strong>Experience:</strong> ${experience} <br>
@@ -241,7 +243,7 @@
       checkField("email", "emailError");
       checkField("phone", "phoneError");
       checkField("linkedin", "linkedinError");
-      checkField("Roles and responsibilities", "Roles and responsibilities error");
+      checkField("Roles and responsibilities", "rolesError");
       checkField("summary", "summaryError");
       checkField("education", "educationError");
       checkField("experience", "experienceError");
@@ -256,7 +258,7 @@
       generatePDF();
     }
     
-    // Generate PDF in a style similar to the provided screenshot
+    // Generate PDF including LinkedIn and Roles sections in the same format
     function generatePDF() {
       const { jsPDF } = window.jspdf;
       const doc = new jsPDF('p', 'pt', 'a4');
@@ -265,9 +267,10 @@
       const name = document.getElementById("name").value.trim() || "Your Name";
       const phone = document.getElementById("phone").value.trim();
       const email = document.getElementById("email").value.trim();
-      // Location set to "India" only
-      const location = "India"; 
+      const location = "India"; // Fixed location
       
+      const linkedinText = document.getElementById("linkedin").value.trim();
+      const rolesText = document.getElementById("Roles and responsibilities").value.trim();
       const summary = document.getElementById("summary").value.trim();
       const skillsText = document.getElementById("skills").value.trim();
       const experienceText = document.getElementById("experience").value.trim();
@@ -281,27 +284,55 @@
       const contentWidth = pageWidth - marginLeft - marginRight;
       let currentY = 60; // Starting vertical position
 
-      // ========== HEADER (Name) ==========
+      // ========== HEADER (Name and Contact) ==========
       doc.setFont("helvetica", "bold");
       doc.setFontSize(18);
       doc.text(name, marginLeft, currentY);
 
-      // Contact info under the name
       doc.setFontSize(10);
       doc.setFont("helvetica", "normal");
       currentY += 15;
       doc.text(`${phone} · ${email} · ${location}`, marginLeft, currentY);
 
-      // Horizontal line
       currentY += 10;
       doc.setLineWidth(0.5);
       doc.setDrawColor(0, 0, 0);
       doc.line(marginLeft, currentY, marginLeft + contentWidth, currentY);
       currentY += 20;
 
-      // ========== SUMMARY SECTION ==========
-      doc.setFontSize(12);
+      // ========== LINKEDIN SECTION ==========
       doc.setFont("helvetica", "bold");
+      doc.setFontSize(12);
+      doc.text("LinkedIn", marginLeft, currentY);
+      currentY += 15;
+
+      doc.setFont("helvetica", "normal");
+      const linkedinLines = doc.splitTextToSize(linkedinText, contentWidth);
+      doc.text(linkedinLines, marginLeft, currentY);
+      currentY += linkedinLines.length * 14;
+      
+      currentY += 10;
+      doc.line(marginLeft, currentY, marginLeft + contentWidth, currentY);
+      currentY += 20;
+
+      // ========== ROLES AND RESPONSIBILITIES SECTION ==========
+      doc.setFont("helvetica", "bold");
+      doc.setFontSize(12);
+      doc.text("Roles and responsibilities", marginLeft, currentY);
+      currentY += 15;
+
+      doc.setFont("helvetica", "normal");
+      const rolesLines = doc.splitTextToSize(rolesText, contentWidth);
+      doc.text(rolesLines, marginLeft, currentY);
+      currentY += rolesLines.length * 14;
+      
+      currentY += 10;
+      doc.line(marginLeft, currentY, marginLeft + contentWidth, currentY);
+      currentY += 20;
+
+      // ========== SUMMARY SECTION ==========
+      doc.setFont("helvetica", "bold");
+      doc.setFontSize(12);
       doc.text("Summary", marginLeft, currentY);
       currentY += 15;
 
@@ -309,8 +340,7 @@
       const summaryLines = doc.splitTextToSize(summary, contentWidth);
       doc.text(summaryLines, marginLeft, currentY);
       currentY += summaryLines.length * 14;
-
-      // Horizontal line
+      
       currentY += 10;
       doc.line(marginLeft, currentY, marginLeft + contentWidth, currentY);
       currentY += 20;
@@ -322,14 +352,12 @@
       currentY += 15;
       
       doc.setFont("helvetica", "normal");
-      // Convert comma-separated skills into bullet points
       const skillsArray = skillsText.split(",").map(item => item.trim()).filter(Boolean);
       skillsArray.forEach(skill => {
         doc.text(`• ${skill}`, marginLeft, currentY);
         currentY += 14;
       });
       
-      // Horizontal line
       currentY += 10;
       doc.line(marginLeft, currentY, marginLeft + contentWidth, currentY);
       currentY += 20;
@@ -344,8 +372,7 @@
       const experienceLines = doc.splitTextToSize(experienceText, contentWidth);
       doc.text(experienceLines, marginLeft, currentY);
       currentY += experienceLines.length * 14;
-
-      // Horizontal line
+      
       currentY += 10;
       doc.line(marginLeft, currentY, marginLeft + contentWidth, currentY);
       currentY += 20;
@@ -360,13 +387,12 @@
       const educationLines = doc.splitTextToSize(educationText, contentWidth);
       doc.text(educationLines, marginLeft, currentY);
       currentY += educationLines.length * 14;
-
-      // Horizontal line
+      
       currentY += 10;
       doc.line(marginLeft, currentY, marginLeft + contentWidth, currentY);
       currentY += 20;
 
-      // ========== PROJECTS SECTION (Optional) ==========
+      // ========== PROJECTS SECTION ==========
       doc.setFont("helvetica", "bold");
       doc.setFontSize(12);
       doc.text("Projects", marginLeft, currentY);
