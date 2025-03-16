@@ -1,0 +1,385 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Professional IT Resume Builder</title>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.4.0/jspdf.umd.min.js"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Raleway:wght@400;700&display=swap" rel="stylesheet" />
+  <style>
+    /* Base Styles */
+    body {
+      font-family: 'Raleway', sans-serif;
+      background: linear-gradient(to right, #000000, #1a1a1a, #8a6f3b);
+      color: white;
+      margin: 0;
+      padding: 0;
+      text-align: center;
+    }
+    nav {
+      background: rgba(0, 0, 0, 0.9);
+      padding: 15px 0;
+      font-size: 18px;
+    }
+    nav a {
+      color: white;
+      margin: 0 15px;
+      text-decoration: none;
+      font-weight: bold;
+      cursor: pointer;
+    }
+    .container {
+      max-width: 600px;
+      background: rgba(255, 255, 255, 0.1);
+      padding: 30px;
+      border-radius: 15px;
+      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+      margin: 50px auto;
+      text-align: left;
+      backdrop-filter: blur(10px);
+    }
+    h1 {
+      font-size: 32px;
+      margin-top: 50px;
+    }
+    h2 {
+      font-size: 26px;
+      margin-bottom: 20px;
+    }
+    label {
+      display: block;
+      margin: 10px 0 5px;
+      font-weight: bold;
+    }
+    input, textarea, button {
+      width: 100%;
+      padding: 12px;
+      margin: 5px 0 15px;
+      border: none;
+      border-radius: 8px;
+      font-size: 16px;
+    }
+    input, textarea {
+      background: rgba(255, 255, 255, 0.9);
+      color: black;
+    }
+    button {
+      background: #8a6f3b;
+      color: white;
+      font-weight: bold;
+      cursor: pointer;
+      transition: background 0.3s ease-in-out;
+    }
+    button:hover {
+      background: #6f5425;
+    }
+    .error {
+      color: #ff6b6b;
+      font-size: 14px;
+      display: none;
+    }
+    footer {
+      background: rgba(0, 0, 0, 0.9);
+      text-align: center;
+      padding: 15px;
+      margin-top: 30px;
+    }
+    footer p {
+      margin: 0;
+      color: #ccc;
+    }
+    /* Live Preview Section */
+    #livePreview {
+      background: rgba(255, 255, 255, 0.1);
+      padding: 20px;
+      border-radius: 10px;
+      margin: 20px auto;
+    }
+    /* Simple link styling within the text */
+    a {
+      color: #8a6f3b;
+    }
+  </style>
+</head>
+<body>
+  <nav>
+    <a onclick="scrollToSection('home')">Home</a>
+    <a onclick="scrollToSection('resume')">Build Resume</a>
+    <a onclick="scrollToSection('contact')">Contact</a>
+  </nav>
+  
+  <section id="home">
+    <h1>Welcome to the Professional IT Resume Builder</h1>
+    <p>Create a stunning and professional resume effortlessly!</p>
+    <button onclick="scrollToSection('resume')">Get Started</button>
+  </section>
+  
+  <main>
+    <section id="resume" class="container">
+      <h2>🚀 Build Your Professional IT Resume</h2>
+      <form id="resumeForm" novalidate>
+        <!-- Personal Information -->
+        <label for="name">👤 Full Name</label>
+        <input type="text" id="name" aria-required="true" placeholder="Enter your full name" required>
+        <span id="nameError" class="error" aria-live="polite">Please enter your name.</span>
+        
+        <label for="email">💎 Email</label>
+        <input type="email" id="email" aria-required="true" placeholder="Enter your email" required>
+        <span id="emailError" class="error" aria-live="polite">Please enter a valid email.</span>
+        
+        <label for="phone">📞 Phone Number</label>
+        <input type="tel" id="phone" aria-required="true" placeholder="Enter your phone number" required>
+        <span id="phoneError" class="error" aria-live="polite">Please enter your phone number.</span>
+        
+        <label for="linkedin">🔗 LinkedIn Profile</label>
+        <input type="url" id="linkedin" aria-required="true" placeholder="Enter your LinkedIn URL" required>
+        <span id="linkedinError" class="error" aria-live="polite">Please enter a valid LinkedIn URL.</span>
+        
+        <label for="github">🤖 GitHub Profile</label>
+        <input type="url" id="github" aria-required="true" placeholder="Enter your GitHub URL" required>
+        <span id="githubError" class="error" aria-live="polite">Please enter a valid GitHub URL.</span>
+        
+        <!-- Summary -->
+        <label for="summary">📝 Summary (Brief about yourself)</label>
+        <textarea id="summary" aria-required="true" placeholder="Enter a brief summary about yourself" required></textarea>
+        <span id="summaryError" class="error" aria-live="polite">Please provide a summary.</span>
+        
+        <!-- Education -->
+        <label for="education">🎓 Education</label>
+        <input type="text" id="education" aria-required="true" placeholder="Enter your education details" required>
+        <span id="educationError" class="error" aria-live="polite">Please enter your education details.</span>
+        
+        <!-- Experience -->
+        <label for="experience">💼 Experience</label>
+        <input type="text" id="experience" aria-required="true" placeholder="Enter your work experience" required>
+        <span id="experienceError" class="error" aria-live="polite">Please enter your experience.</span>
+        
+        <!-- Skills -->
+        <label for="skills">🛠️ Skills</label>
+        <input type="text" id="skills" aria-required="true" placeholder="Enter your skills (comma-separated)" required>
+        <span id="skillsError" class="error" aria-live="polite">Please enter your skills.</span>
+        
+        <!-- Projects -->
+        <label for="projects">📌 Projects (Highlight key projects)</label>
+        <textarea id="projects" aria-required="true" placeholder="Enter details about your projects" required></textarea>
+        <span id="projectsError" class="error" aria-live="polite">Please list your projects.</span>
+        
+        <button type="button" onclick="validateAndGeneratePDF()">📀 Download Resume</button>
+      </form>
+      
+      <!-- Live Preview Section -->
+      <div id="livePreview">
+        <h2>Live Preview</h2>
+        <p id="previewContent">Your resume preview will appear here as you fill out the form.</p>
+      </div>
+    </section>
+    
+    <!-- Contact Section -->
+    <section id="contact" class="container">
+      <h2>Contact Us</h2>
+      <p>Have questions or feedback? Reach out to us at <a href="mailto:support@example.com">support@example.com</a>.</p>
+    </section>
+  </main>
+  
+  <footer>
+    <p>&copy; 2025 Professional IT Resume Builder. All rights reserved.</p>
+  </footer>
+  
+  <script>
+    // Smooth scroll to a specific section
+    function scrollToSection(sectionId) {
+      document.getElementById(sectionId).scrollIntoView({ behavior: "smooth" });
+    }
+    
+    // Update live preview with form data
+    function updatePreview() {
+      const preview = document.getElementById("previewContent");
+      const name = document.getElementById("name").value;
+      const email = document.getElementById("email").value;
+      const phone = document.getElementById("phone").value;
+      const linkedin = document.getElementById("linkedin").value;
+      const github = document.getElementById("github").value;
+      const summary = document.getElementById("summary").value;
+      const education = document.getElementById("education").value;
+      const experience = document.getElementById("experience").value;
+      const skills = document.getElementById("skills").value;
+      const projects = document.getElementById("projects").value;
+      
+      preview.innerHTML = `
+        <strong>Name:</strong> ${name} <br>
+        <strong>Email:</strong> ${email} <br>
+        <strong>Phone:</strong> ${phone} <br>
+        <strong>LinkedIn:</strong> ${linkedin} <br>
+        <strong>GitHub:</strong> ${github} <br>
+        <strong>Summary:</strong> ${summary} <br>
+        <strong>Education:</strong> ${education} <br>
+        <strong>Experience:</strong> ${experience} <br>
+        <strong>Skills:</strong> ${skills} <br>
+        <strong>Projects:</strong> ${projects}
+      `;
+    }
+    
+    // Update preview on any form input change
+    document.getElementById("resumeForm").addEventListener("input", updatePreview);
+    
+    // Validate fields and show error messages if needed
+    function validateAndGeneratePDF() {
+      let isValid = true;
+      
+      function checkField(fieldId, errorId) {
+        const field = document.getElementById(fieldId);
+        const errorSpan = document.getElementById(errorId);
+        if (!field.value.trim()) {
+          errorSpan.style.display = "block";
+          isValid = false;
+        } else {
+          errorSpan.style.display = "none";
+        }
+      }
+      
+      checkField("name", "nameError");
+      checkField("email", "emailError");
+      checkField("phone", "phoneError");
+      checkField("linkedin", "linkedinError");
+      checkField("github", "githubError");
+      checkField("summary", "summaryError");
+      checkField("education", "educationError");
+      checkField("experience", "experienceError");
+      checkField("skills", "skillsError");
+      checkField("projects", "projectsError");
+      
+      if (!isValid) {
+        alert("Please fill in all required fields correctly.");
+        return;
+      }
+      
+      generatePDF();
+    }
+    
+    // Generate PDF in a style similar to the provided screenshot
+    function generatePDF() {
+      const { jsPDF } = window.jspdf;
+      const doc = new jsPDF('p', 'pt', 'a4');
+
+      // Retrieve field values
+      const name = document.getElementById("name").value.trim() || "Your Name";
+      const phone = document.getElementById("phone").value.trim();
+      const email = document.getElementById("email").value.trim();
+      // Location set to "India" only
+      const location = "India"; 
+      
+      const summary = document.getElementById("summary").value.trim();
+      const skillsText = document.getElementById("skills").value.trim();
+      const experienceText = document.getElementById("experience").value.trim();
+      const educationText = document.getElementById("education").value.trim();
+      const projectsText = document.getElementById("projects").value.trim();
+      
+      // PDF page setup
+      const pageWidth = doc.internal.pageSize.getWidth();
+      const marginLeft = 40;
+      const marginRight = 40;
+      const contentWidth = pageWidth - marginLeft - marginRight;
+      let currentY = 60; // Starting vertical position
+
+      // ========== HEADER (Name) ==========
+      doc.setFont("helvetica", "bold");
+      doc.setFontSize(18);
+      doc.text(name, marginLeft, currentY);
+
+      // Contact info under the name
+      doc.setFontSize(10);
+      doc.setFont("helvetica", "normal");
+      currentY += 15;
+      doc.text(`${phone} · ${email} · ${location}`, marginLeft, currentY);
+
+      // Horizontal line
+      currentY += 10;
+      doc.setLineWidth(0.5);
+      doc.setDrawColor(0, 0, 0);
+      doc.line(marginLeft, currentY, marginLeft + contentWidth, currentY);
+      currentY += 20;
+
+      // ========== SUMMARY SECTION ==========
+      doc.setFontSize(12);
+      doc.setFont("helvetica", "bold");
+      doc.text("Summary", marginLeft, currentY);
+      currentY += 15;
+
+      doc.setFont("helvetica", "normal");
+      const summaryLines = doc.splitTextToSize(summary, contentWidth);
+      doc.text(summaryLines, marginLeft, currentY);
+      currentY += summaryLines.length * 14;
+
+      // Horizontal line
+      currentY += 10;
+      doc.line(marginLeft, currentY, marginLeft + contentWidth, currentY);
+      currentY += 20;
+
+      // ========== SKILLS SECTION ==========
+      doc.setFont("helvetica", "bold");
+      doc.setFontSize(12);
+      doc.text("Skills", marginLeft, currentY);
+      currentY += 15;
+      
+      doc.setFont("helvetica", "normal");
+      // Convert comma-separated skills into bullet points
+      const skillsArray = skillsText.split(",").map(item => item.trim()).filter(Boolean);
+      skillsArray.forEach(skill => {
+        doc.text(`• ${skill}`, marginLeft, currentY);
+        currentY += 14;
+      });
+      
+      // Horizontal line
+      currentY += 10;
+      doc.line(marginLeft, currentY, marginLeft + contentWidth, currentY);
+      currentY += 20;
+
+      // ========== EXPERIENCE SECTION ==========
+      doc.setFont("helvetica", "bold");
+      doc.setFontSize(12);
+      doc.text("Experience", marginLeft, currentY);
+      currentY += 15;
+      
+      doc.setFont("helvetica", "normal");
+      const experienceLines = doc.splitTextToSize(experienceText, contentWidth);
+      doc.text(experienceLines, marginLeft, currentY);
+      currentY += experienceLines.length * 14;
+
+      // Horizontal line
+      currentY += 10;
+      doc.line(marginLeft, currentY, marginLeft + contentWidth, currentY);
+      currentY += 20;
+
+      // ========== EDUCATION AND TRAINING SECTION ==========
+      doc.setFont("helvetica", "bold");
+      doc.setFontSize(12);
+      doc.text("Education And Training", marginLeft, currentY);
+      currentY += 15;
+      
+      doc.setFont("helvetica", "normal");
+      const educationLines = doc.splitTextToSize(educationText, contentWidth);
+      doc.text(educationLines, marginLeft, currentY);
+      currentY += educationLines.length * 14;
+
+      // Horizontal line
+      currentY += 10;
+      doc.line(marginLeft, currentY, marginLeft + contentWidth, currentY);
+      currentY += 20;
+
+      // ========== PROJECTS SECTION (Optional) ==========
+      doc.setFont("helvetica", "bold");
+      doc.setFontSize(12);
+      doc.text("Projects", marginLeft, currentY);
+      currentY += 15;
+      
+      doc.setFont("helvetica", "normal");
+      const projectsLines = doc.splitTextToSize(projectsText, contentWidth);
+      doc.text(projectsLines, marginLeft, currentY);
+      currentY += projectsLines.length * 14;
+
+      // Save the PDF
+      doc.save("IT_Professional_Resume.pdf");
+    }
+  </script>
+</body>
+</html>
